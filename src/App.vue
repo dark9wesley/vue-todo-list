@@ -24,7 +24,7 @@ export default {
   },
   data(){
     return {
-      todos: []
+      todos: JSON.parse(localStorage.getItem('todos')) || []
     }
   },
   methods: {
@@ -53,8 +53,16 @@ export default {
     removeCheckedTodo(){
       const newTodos =  this.todos.filter(todo => !todo.done)
       this.todos = newTodos
+    },
+  },
+  watch: {
+    todos: {
+      deep: true,
+      handler(newTodos){
+        localStorage.setItem('todos', JSON.stringify(newTodos))
+      }
     }
-  }
+  },
 }
 </script>
 
