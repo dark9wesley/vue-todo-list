@@ -8,6 +8,7 @@
         type="text" 
         :value="todo.value" 
         @blur="confirmEdit($event, todo.id)" 
+        ref="editInput"
       >
     </label>
     <button class="btn btn-danger" @click="deleteTodo(todo.id)">删除</button>
@@ -29,9 +30,18 @@ export default {
     },
     handleEdit(id){
       this.$bus.$emit('handleEdit', id)
+      // input框自动获取焦点
+      this.$nextTick(() => {
+        this.$refs.editInput.focus()
+      })
     },
     confirmEdit(e, id){
-      this.$bus.$emit('confirmEdit', id, e.target.value)
+      const { value } = e.target
+      if(!value.trim()){
+        alert('内容不能为空')
+        return
+      }
+      this.$bus.$emit('confirmEdit', id, value)
     }
   }
 }

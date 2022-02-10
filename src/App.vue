@@ -67,10 +67,6 @@ export default {
     },
     // 确认编辑内容
     confirmEdit(id, value){
-      if(!value.trim()){
-        alert('内容不能为空')
-        return
-      }
       this.todos.forEach(todo => {
         if(todo.id !== id) return
         todo.value = value
