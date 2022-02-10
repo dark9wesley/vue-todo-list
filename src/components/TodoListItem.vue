@@ -10,14 +10,14 @@
 <script>
 export default {
   name: 'TodoListItem',
-  props: ['todo', 'checkTodo', 'removeTodo'],
+  props: ['todo'],
   methods:{
     changeTodo(id){
-      this.checkTodo(id)
+      this.$bus.$emit('checkTodo', id)
     },
     deleteTodo(id){
       if(confirm('确定取消吗？')){
-        this.removeTodo(id)
+        this.$bus.$emit('removeTodo', id)
       }
     }
   }
