@@ -54,6 +54,29 @@ export default {
       const newTodos =  this.todos.filter(todo => !todo.done)
       this.todos = newTodos
     },
+    // 将一个Todo更改为编辑模式
+    handleEdit(id){
+      this.todos.forEach(todo => {
+        if(todo.id !== id) return
+        if(Object.prototype.hasOwnProperty.call(todo, 'isEdit')){
+          todo.isEdit = true
+        }else{
+          this.$set(todo, 'isEdit', true)
+        }
+      })
+    },
+    // 确认编辑内容
+    confirmEdit(id, value){
+      if(!value.trim()){
+        alert('内容不能为空')
+        return
+      }
+      this.todos.forEach(todo => {
+        if(todo.id !== id) return
+        todo.value = value
+        todo.isEdit = false
+      })
+    }
   },
   watch: {
     todos: {
@@ -66,9 +89,11 @@ export default {
   mounted(){
     this.$bus.$on('checkTodo', this.checkTodo)
     this.$bus.$on('removeTodo', this.removeTodo)
+    this.$bus.$on('handleEdit', this.handleEdit)
+    this.$bus.$on('confirmEdit', this.confirmEdit)
   },
   beforeDestroy(){
-    this.$bus.$off(['checkTodo', 'removeTodo'])
+    this.$bus.$off(['checkTodo', 'removeTodo', 'handleEdit', 'confirmEdit'])
   }
 }
 </script>
@@ -96,6 +121,13 @@ export default {
     color: #fff;
     background-color: #da4f49;
     border: 1px solid #bd362f;
+  }
+
+  .btn-edit {
+    color: #fff;
+    background-color: skyblue;
+    border: 1px solid skyblue;
+    margin-right: 10px;
   }
 
   .btn-danger:hover {

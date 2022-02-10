@@ -2,9 +2,16 @@
   <li>
     <label>
       <input type="checkbox" :checked="todo.done" @change="changeTodo(todo.id)"/>
-      <span>{{ todo.value }}</span>
+      <span v-if="!todo.isEdit">{{ todo.value }}</span>
+      <input 
+        v-else 
+        type="text" 
+        :value="todo.value" 
+        @blur="confirmEdit($event, todo.id)" 
+      >
     </label>
     <button class="btn btn-danger" @click="deleteTodo(todo.id)">删除</button>
+    <button v-show="!todo.isEdit" class="btn btn-edit" @click="handleEdit(todo.id)">编辑</button>
   </li>
 </template>
 <script>
@@ -19,6 +26,12 @@ export default {
       if(confirm('确定取消吗？')){
         this.$bus.$emit('removeTodo', id)
       }
+    },
+    handleEdit(id){
+      this.$bus.$emit('handleEdit', id)
+    },
+    confirmEdit(e, id){
+      this.$bus.$emit('confirmEdit', id, e.target.value)
     }
   }
 }
