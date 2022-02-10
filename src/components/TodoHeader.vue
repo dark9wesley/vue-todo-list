@@ -8,13 +8,12 @@ import { nanoid } from 'nanoid'
 
 export default {
   name: 'TodoHeader',
-  props: ['addTodo'],
   methods: {
     add(e){
       const { value } = e.target
       if(!value.trim()) return
       const nowTodo = { id: nanoid(), value, done: false }
-      this.addTodo(nowTodo)
+      this.$emit('addTodo', nowTodo)
       e.target.value = ''
     }
   }

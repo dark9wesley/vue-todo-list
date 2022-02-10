@@ -12,7 +12,7 @@
 <script>
 export default {
   name: 'TodoFooter',
-  props: ["todos", "checkAllTodo", "removeCheckedTodo"],
+  props: ["todos"],
   computed: {
     total(){
       return this.todos.length
@@ -25,14 +25,14 @@ export default {
         return this.doneTotal === this.total && this.total !== 0
       },
       set(done){
-        this.checkAllTodo(done)
+        this.$emit('checkAllTodo', done)
       }
     }
   },
   methods: {
     clearCheckedTodo(){
       if(confirm('确定清除已完成任务吗？')){
-        this.removeCheckedTodo()
+        this.$emit('removeCheckedTodo')
       }
     }
   }
